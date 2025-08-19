@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TelaBase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Batalha Naval</a> &gt; <a href="index.source.html" class="el_package">batalha_naval</a> &gt; <span class="el_source">TelaBase.java</span></div><h1>TelaBase.java</h1><pre class="source lang-java linenums">package batalha_naval;
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * Classe base abstrata para todas as telas do jogo Batalha Naval.
+ * Implementa funcionalidades comuns a todas as telas para evitar duplicação de código.
+ * 
+ * @author ERIK
+ * @version 1.0.2
+ */
+public abstract class TelaBase extends JFrame {
+    
+    /** Cores padrão do jogo */
+<span class="fc" id="L16">    protected static final Color COR_FUNDO = new Color(0, 105, 148);</span>
+<span class="fc" id="L17">    protected static final Color COR_BOTAO = new Color(255, 255, 255);</span>
+<span class="fc" id="L18">    protected static final Color COR_TEXTO_BOTAO = new Color(0, 105, 148);</span>
+<span class="fc" id="L19">    protected static final Color COR_TEXTO_BRANCO = Color.WHITE;</span>
+<span class="fc" id="L20">    protected static final Color COR_VERDE = new Color(0, 255, 0);</span>
+<span class="fc" id="L21">    protected static final Color COR_VERMELHO = new Color(255, 0, 0);</span>
+    
+    /** Fontes padrão do jogo */
+<span class="fc" id="L24">    protected static final Font FONTE_TITULO = new Font(&quot;Arial&quot;, Font.BOLD, 32);</span>
+<span class="fc" id="L25">    protected static final Font FONTE_TITULO_GRANDE = new Font(&quot;Arial&quot;, Font.BOLD, 48);</span>
+<span class="fc" id="L26">    protected static final Font FONTE_BOTAO = new Font(&quot;Arial&quot;, Font.BOLD, 16);</span>
+<span class="fc" id="L27">    protected static final Font FONTE_BOTAO_GRANDE = new Font(&quot;Arial&quot;, Font.BOLD, 18);</span>
+<span class="fc" id="L28">    protected static final Font FONTE_RESULTADO = new Font(&quot;Arial&quot;, Font.BOLD, 36);</span>
+    
+    /** Painel principal da tela */
+    protected JPanel painelPrincipal;
+
+    /**
+     * Construtor da classe TelaBase.
+     * 
+     * @param titulo Título da janela
+     */
+<span class="fc" id="L38">    public TelaBase(String titulo) {</span>
+<span class="fc" id="L39">        configurarJanela(titulo);</span>
+<span class="fc" id="L40">        inicializarTela();</span>
+<span class="fc" id="L41">    }</span>
+
+    /**
+     * Configura as propriedades básicas da janela.
+     * 
+     * @param titulo Título da janela
+     */
+    private void configurarJanela(String titulo) {
+<span class="fc" id="L49">        setTitle(titulo);</span>
+<span class="fc" id="L50">        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="fc" id="L51">        setExtendedState(JFrame.MAXIMIZED_BOTH);</span>
+<span class="fc" id="L52">        setLocationRelativeTo(null);</span>
+<span class="fc" id="L53">        setResizable(false);</span>
+<span class="fc" id="L54">    }</span>
+
+    /**
+     * Inicializa a tela chamando os métodos abstratos.
+     */
+    private void inicializarTela() {
+<span class="fc" id="L60">        criarComponentes();</span>
+<span class="fc" id="L61">        adicionarComponentes();</span>
+<span class="fc" id="L62">        configurarEventos();</span>
+<span class="fc" id="L63">    }</span>
+
+    /**
+     * Cria um botão padronizado com as cores e fontes do jogo.
+     * 
+     * @param texto Texto do botão
+     * @return JButton configurado
+     */
+    protected JButton criarBotao(String texto) {
+<span class="fc" id="L72">        JButton botao = new JButton(texto);</span>
+<span class="fc" id="L73">        botao.setFont(FONTE_BOTAO);</span>
+<span class="fc" id="L74">        botao.setBackground(COR_BOTAO);</span>
+<span class="fc" id="L75">        botao.setForeground(COR_TEXTO_BOTAO);</span>
+<span class="fc" id="L76">        return botao;</span>
+    }
+
+    /**
+     * Cria um botão grande padronizado.
+     * 
+     * @param texto Texto do botão
+     * @return JButton configurado
+     */
+    protected JButton criarBotaoGrande(String texto) {
+<span class="fc" id="L86">        JButton botao = criarBotao(texto);</span>
+<span class="fc" id="L87">        botao.setFont(FONTE_BOTAO_GRANDE);</span>
+<span class="fc" id="L88">        botao.setPreferredSize(new Dimension(200, 50));</span>
+<span class="fc" id="L89">        return botao;</span>
+    }
+
+    /**
+     * Cria um label de título padronizado.
+     * 
+     * @param texto Texto do título
+     * @return JLabel configurado
+     */
+    protected JLabel criarTitulo(String texto) {
+<span class="fc" id="L99">        JLabel titulo = new JLabel(texto);</span>
+<span class="fc" id="L100">        titulo.setFont(FONTE_TITULO);</span>
+<span class="fc" id="L101">        titulo.setForeground(COR_TEXTO_BRANCO);</span>
+<span class="fc" id="L102">        titulo.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="fc" id="L103">        return titulo;</span>
+    }
+
+    /**
+     * Cria um label de título grande padronizado.
+     * 
+     * @param texto Texto do título
+     * @return JLabel configurado
+     */
+    protected JLabel criarTituloGrande(String texto) {
+<span class="fc" id="L113">        JLabel titulo = new JLabel(texto);</span>
+<span class="fc" id="L114">        titulo.setFont(FONTE_TITULO_GRANDE);</span>
+<span class="fc" id="L115">        titulo.setForeground(COR_TEXTO_BRANCO);</span>
+<span class="fc" id="L116">        titulo.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="fc" id="L117">        return titulo;</span>
+    }
+
+    /**
+     * Cria um painel principal padronizado.
+     * 
+     * @return JPanel configurado
+     */
+    protected JPanel criarPainelPrincipal() {
+<span class="fc" id="L126">        JPanel painel = new JPanel();</span>
+<span class="fc" id="L127">        painel.setLayout(new GridBagLayout());</span>
+<span class="fc" id="L128">        painel.setBackground(COR_FUNDO);</span>
+<span class="fc" id="L129">        return painel;</span>
+    }
+
+    /**
+     * Cria um painel principal com layout específico.
+     * 
+     * @param layout Layout do painel
+     * @return JPanel configurado
+     */
+    protected JPanel criarPainelPrincipal(LayoutManager layout) {
+<span class="fc" id="L139">        JPanel painel = new JPanel(layout);</span>
+<span class="fc" id="L140">        painel.setBackground(COR_FUNDO);</span>
+<span class="fc" id="L141">        return painel;</span>
+    }
+
+    /**
+     * Cria um GridBagConstraints padronizado para centralizar componentes.
+     * 
+     * @return GridBagConstraints configurado
+     */
+    protected GridBagConstraints criarGridBagConstraints() {
+<span class="fc" id="L150">        GridBagConstraints gbc = new GridBagConstraints();</span>
+<span class="fc" id="L151">        gbc.gridwidth = GridBagConstraints.REMAINDER;</span>
+<span class="fc" id="L152">        gbc.fill = GridBagConstraints.HORIZONTAL;</span>
+<span class="fc" id="L153">        gbc.insets = new Insets(10, 50, 10, 50);</span>
+<span class="fc" id="L154">        return gbc;</span>
+    }
+
+    /**
+     * Adiciona um componente com espaçamento ao painel principal.
+     * 
+     * @param componente Componente a ser adicionado
+     * @param altura Altura do espaçamento
+     */
+    protected void adicionarComEspacamento(JComponent componente, int altura) {
+<span class="nc bnc" id="L164" title="All 2 branches missed.">        if (painelPrincipal.getLayout() instanceof GridBagLayout) {</span>
+<span class="nc" id="L165">            GridBagConstraints gbc = criarGridBagConstraints();</span>
+<span class="nc" id="L166">            painelPrincipal.add(componente, gbc);</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">            if (altura &gt; 0) {</span>
+<span class="nc" id="L168">                painelPrincipal.add(Box.createRigidArea(new Dimension(0, altura)), gbc);</span>
+            }
+        }
+<span class="nc" id="L171">    }</span>
+
+    /**
+     * Cria um label de resultado (vitória/derrota).
+     * 
+     * @param texto Texto do resultado
+     * @param vitoria true para cor verde, false para cor vermelha
+     * @return JLabel configurado
+     */
+    protected JLabel criarLabelResultado(String texto, boolean vitoria) {
+<span class="fc" id="L181">        JLabel label = new JLabel(texto);</span>
+<span class="fc" id="L182">        label.setFont(FONTE_RESULTADO);</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">        label.setForeground(vitoria ? COR_VERDE : COR_VERMELHO);</span>
+<span class="fc" id="L184">        label.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="fc" id="L185">        return label;</span>
+    }
+
+    /**
+     * Método abstrato para criar os componentes específicos da tela.
+     * Deve ser implementado pelas classes filhas.
+     */
+    protected abstract void criarComponentes();
+
+    /**
+     * Método abstrato para adicionar os componentes ao painel principal.
+     * Deve ser implementado pelas classes filhas.
+     */
+    protected abstract void adicionarComponentes();
+
+    /**
+     * Método abstrato para configurar os eventos dos componentes.
+     * Deve ser implementado pelas classes filhas.
+     */
+    protected abstract void configurarEventos();
+
+    /**
+     * Método para navegar para outra tela.
+     * 
+     * @param novaTela Nova tela a ser exibida
+     */
+    protected void navegarPara(JFrame novaTela) {
+<span class="nc" id="L212">        novaTela.setVisible(true);</span>
+<span class="nc" id="L213">        dispose();</span>
+<span class="nc" id="L214">    }</span>
+
+    /**
+     * Método para voltar ao menu inicial.
+     */
+    protected void voltarAoMenu() {
+<span class="nc" id="L220">        TelaInicial telaInicial = new TelaInicial();</span>
+<span class="nc" id="L221">        navegarPara(telaInicial);</span>
+<span class="nc" id="L222">    }</span>
+
+    /**
+     * Método para sair do jogo.
+     */
+    protected void sairDoJogo() {
+<span class="nc" id="L228">        System.exit(0);</span>
+<span class="nc" id="L229">    }</span>
+
+    /**
+     * Método para mostrar uma mensagem de erro.
+     * 
+     * @param mensagem Mensagem de erro
+     */
+    protected void mostrarErro(String mensagem) {
+<span class="nc" id="L237">        JOptionPane.showMessageDialog(this, mensagem, &quot;Erro&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L238">    }</span>
+
+    /**
+     * Método para mostrar uma mensagem de informação.
+     * 
+     * @param mensagem Mensagem de informação
+     * @param titulo Título da janela
+     */
+    protected void mostrarInformacao(String mensagem, String titulo) {
+<span class="nc" id="L247">        JOptionPane.showMessageDialog(this, mensagem, titulo, JOptionPane.INFORMATION_MESSAGE);</span>
+<span class="nc" id="L248">    }</span>
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

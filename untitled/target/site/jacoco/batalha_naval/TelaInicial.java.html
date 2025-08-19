@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TelaInicial.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Batalha Naval</a> &gt; <a href="index.source.html" class="el_package">batalha_naval</a> &gt; <span class="el_source">TelaInicial.java</span></div><h1>TelaInicial.java</h1><pre class="source lang-java linenums">package batalha_naval;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+/**
+ * Classe que representa a tela inicial do jogo Batalha Naval.
+ * Gerencia a interface gráfica inicial e a transição para o jogo.
+ * 
+ * @author ERIK
+ * @version 1.0.2
+ */
+public class TelaInicial extends JFrame {
+    /** Botão para iniciar o jogo */
+    private JButton btnIniciar;
+    
+    /** Botão para sair do jogo */
+    private JButton btnSair;
+    
+    /** Botão para mostrar as regras do jogo */
+    private JButton btnRegras;
+    
+    /** Painel principal da tela */
+    private JPanel painelPrincipal;
+
+    /**
+     * Construtor da classe TelaInicial.
+     * Configura a janela e seus componentes.
+     */
+<span class="fc" id="L31">    public TelaInicial() {</span>
+<span class="fc" id="L32">        configurarJanela();</span>
+<span class="fc" id="L33">        criarComponentes();</span>
+<span class="fc" id="L34">        adicionarComponentes();</span>
+<span class="fc" id="L35">        configurarEventos();</span>
+<span class="fc" id="L36">    }</span>
+
+    /**
+     * Configura as propriedades da janela.
+     */
+    private void configurarJanela() {
+<span class="fc" id="L42">        setTitle(&quot;Batalha Naval&quot;);</span>
+<span class="fc" id="L43">        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="fc" id="L44">        setExtendedState(JFrame.MAXIMIZED_BOTH);</span>
+<span class="fc" id="L45">        setLocationRelativeTo(null);</span>
+<span class="fc" id="L46">        setResizable(false);</span>
+<span class="fc" id="L47">    }</span>
+
+    /**
+     * Cria os componentes da interface.
+     */
+    private void criarComponentes() {
+<span class="fc" id="L53">        painelPrincipal = new JPanel();</span>
+<span class="fc" id="L54">        painelPrincipal.setLayout(new GridBagLayout());</span>
+<span class="fc" id="L55">        painelPrincipal.setBackground(new Color(0, 105, 148));</span>
+
+<span class="fc" id="L57">        btnIniciar = new JButton(&quot;Iniciar Jogo&quot;);</span>
+<span class="fc" id="L58">        btnIniciar.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 16));</span>
+<span class="fc" id="L59">        btnIniciar.setBackground(new Color(255, 255, 255));</span>
+<span class="fc" id="L60">        btnIniciar.setForeground(new Color(0, 105, 148));</span>
+
+<span class="fc" id="L62">        btnRegras = new JButton(&quot;Regras&quot;);</span>
+<span class="fc" id="L63">        btnRegras.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 16));</span>
+<span class="fc" id="L64">        btnRegras.setBackground(new Color(255, 255, 255));</span>
+<span class="fc" id="L65">        btnRegras.setForeground(new Color(0, 105, 148));</span>
+
+<span class="fc" id="L67">        btnSair = new JButton(&quot;Sair&quot;);</span>
+<span class="fc" id="L68">        btnSair.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 16));</span>
+<span class="fc" id="L69">        btnSair.setBackground(new Color(255, 255, 255));</span>
+<span class="fc" id="L70">        btnSair.setForeground(new Color(0, 105, 148));</span>
+
+
+<span class="fc" id="L73">    }</span>
+
+    /**
+     * Adiciona os componentes ao painel principal.
+     */
+    private void adicionarComponentes() {
+<span class="fc" id="L79">        GridBagConstraints gbc = new GridBagConstraints();</span>
+<span class="fc" id="L80">        gbc.gridwidth = GridBagConstraints.REMAINDER;</span>
+<span class="fc" id="L81">        gbc.fill = GridBagConstraints.HORIZONTAL;</span>
+<span class="fc" id="L82">        gbc.insets = new Insets(10, 50, 10, 50);</span>
+
+<span class="fc" id="L84">        JLabel titulo = new JLabel(&quot;BATALHA NAVAL&quot;);</span>
+<span class="fc" id="L85">        titulo.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 32));</span>
+<span class="fc" id="L86">        titulo.setForeground(Color.WHITE);</span>
+<span class="fc" id="L87">        titulo.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="fc" id="L88">        painelPrincipal.add(titulo, gbc);</span>
+
+<span class="fc" id="L90">        painelPrincipal.add(btnIniciar, gbc);</span>
+<span class="fc" id="L91">        painelPrincipal.add(btnRegras, gbc);</span>
+<span class="fc" id="L92">        painelPrincipal.add(btnSair, gbc);</span>
+
+<span class="fc" id="L94">        add(painelPrincipal);</span>
+<span class="fc" id="L95">    }</span>
+
+    /**
+     * Configura os eventos dos componentes.
+     */
+    private void configurarEventos() {
+<span class="pc" id="L101">        btnIniciar.addActionListener(e -&gt; iniciarJogo());</span>
+<span class="pc" id="L102">        btnSair.addActionListener(e -&gt; System.exit(0));</span>
+<span class="pc" id="L103">        btnRegras.addActionListener(e -&gt; mostrarRegras());</span>
+<span class="fc" id="L104">    }</span>
+
+    /**
+     * Inicia o jogo, criando uma nova instância de TelaPosicionamento.
+     */
+    private void iniciarJogo() {
+<span class="nc" id="L110">        TelaPosicionamento telaPosicionamento = new TelaPosicionamento();</span>
+<span class="nc" id="L111">        telaPosicionamento.setVisible(true);</span>
+<span class="nc" id="L112">        dispose();</span>
+<span class="nc" id="L113">    }</span>
+
+    /**
+     * Exibe as regras do jogo em um JOptionPane.
+     */
+    private void mostrarRegras() {
+<span class="nc" id="L119">        String regras = &quot;Como Jogar:\n&quot; +</span>
+                &quot;1. Inicie o jogo clicando em 'JOGAR'\n&quot; +
+                &quot;2. Posicione seus navios no tabuleiro:\n&quot; +
+                &quot;   - Clique em uma posição para posicionar o navio\n&quot; +
+                &quot;   - Use o botão 'GIRAR NAVIO' para mudar a orientação\n&quot; +
+                &quot;   - Navios não podem se sobrepor ou ultrapassar os limites do tabuleiro\n&quot; +
+                &quot;3. Após posicionar todos os navios, clique em 'INICIAR JOGO'\n&quot; +
+                &quot;4. Na fase de batalha:\n&quot; +
+                &quot;   - Clique em uma posição no tabuleiro do computador para atirar\n&quot; +
+                &quot;   - Se acertar um navio, joga novamente\n&quot; +
+                &quot;   - Se errar, passa a vez para o computador\n&quot; +
+                &quot;5. Vence quem destruir todos os navios do oponente primeiro.&quot;;
+<span class="nc" id="L131">        JOptionPane.showMessageDialog(this, regras, &quot;Regras do Jogo&quot;, JOptionPane.INFORMATION_MESSAGE);</span>
+<span class="nc" id="L132">    }</span>
+
+    /**
+     * Método principal que inicia a aplicação.
+     * 
+     * @param args Argumentos da linha de comando (não utilizados)
+     */
+    public static void main(String[] args) {
+<span class="nc" id="L140">        SwingUtilities.invokeLater(() -&gt; {</span>
+<span class="nc" id="L141">            TelaInicial telaInicial = new TelaInicial();</span>
+<span class="nc" id="L142">            telaInicial.setVisible(true);</span>
+<span class="nc" id="L143">        });</span>
+<span class="nc" id="L144">    }</span>
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

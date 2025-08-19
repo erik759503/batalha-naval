@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TelaPosicionamento.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Batalha Naval</a> &gt; <a href="index.source.html" class="el_package">batalha_naval</a> &gt; <span class="el_source">TelaPosicionamento.java</span></div><h1>TelaPosicionamento.java</h1><pre class="source lang-java linenums">package batalha_naval;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+
+/**
+ * Classe que representa a tela de posicionamento dos navios.
+ * Gerencia a interface gráfica para posicionar os navios no tabuleiro.
+ * 
+ * @author ERIK
+ * @version 1.0.2
+ */
+public class TelaPosicionamento extends JFrame {
+    /** Tabuleiro do jogador */
+    private Tabuleiro tabuleiro;
+    
+    /** Matriz de botões que representa o tabuleiro */
+    private JButton[][] botoes;
+    
+    /** Navio atual sendo posicionado */
+    private Navio navioAtual;
+    
+    /** Índice do navio atual na lista de navios */
+    private int indiceNavioAtual;
+    
+    /** Lista de navios a serem posicionados */
+    private Navio[] navios;
+    
+    /** Botão para girar o navio */
+    private JButton btnGirar;
+    
+    /** Botão para confirmar o posicionamento */
+    private JButton btnConfirmar;
+    
+    /** Botão para reiniciar o posicionamento */
+    private JButton btnReiniciar;
+    
+    /** Painel que contém o tabuleiro */
+    private JPanel painelTabuleiro;
+    
+    /** Painel que contém os controles */
+    private JPanel painelControles;
+    
+    /** Label que mostra o navio atual */
+    private JLabel lblNavioAtual;
+
+    /**
+     * Construtor da classe TelaPosicionamento.
+     * Configura a janela e seus componentes.
+     */
+<span class="nc" id="L53">    public TelaPosicionamento() {</span>
+<span class="nc" id="L54">        configurarJanela();</span>
+<span class="nc" id="L55">        inicializarNavios();</span>
+<span class="nc" id="L56">        criarComponentes();</span>
+<span class="nc" id="L57">        adicionarComponentes();</span>
+<span class="nc" id="L58">        configurarEventos();</span>
+<span class="nc" id="L59">    }</span>
+
+    /**
+     * Configura as propriedades da janela.
+     */
+    private void configurarJanela() {
+<span class="nc" id="L65">        setTitle(&quot;Posicionar Navios&quot;);</span>
+<span class="nc" id="L66">        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L67">        setExtendedState(JFrame.MAXIMIZED_BOTH);</span>
+<span class="nc" id="L68">        setLocationRelativeTo(null);</span>
+<span class="nc" id="L69">        setResizable(false);</span>
+<span class="nc" id="L70">    }</span>
+
+    /**
+     * Inicializa a lista de navios a serem posicionados.
+     */
+    private void inicializarNavios() {
+<span class="nc" id="L76">        tabuleiro = new Tabuleiro();</span>
+<span class="nc" id="L77">        navios = new Navio[] {</span>
+            new Navio(5), // Porta-aviões
+            new Navio(4), // Encouraçado
+            new Navio(3), // Cruzador
+            new Navio(3), // Submarino
+            new Navio(2)  // Destruidor
+        };
+<span class="nc" id="L84">        indiceNavioAtual = 0;</span>
+<span class="nc" id="L85">        navioAtual = navios[indiceNavioAtual];</span>
+<span class="nc" id="L86">    }</span>
+
+    /**
+     * Cria os componentes da interface.
+     */
+    private void criarComponentes() {
+<span class="nc" id="L92">        painelTabuleiro = new JPanel(new GridLayout(Tabuleiro.TAMANHO, Tabuleiro.TAMANHO));</span>
+<span class="nc" id="L93">        painelTabuleiro.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));</span>
+<span class="nc" id="L94">        botoes = new JButton[Tabuleiro.TAMANHO][Tabuleiro.TAMANHO];</span>
+
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        for (int i = 0; i &lt; Tabuleiro.TAMANHO; i++) {</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            for (int j = 0; j &lt; Tabuleiro.TAMANHO; j++) {</span>
+<span class="nc" id="L98">                botoes[i][j] = new JButton();</span>
+<span class="nc" id="L99">                botoes[i][j].setPreferredSize(new Dimension(Tabuleiro.TAMANHO_CELULA, Tabuleiro.TAMANHO_CELULA));</span>
+<span class="nc" id="L100">                botoes[i][j].setBackground(Tabuleiro.COR_AGUA);</span>
+<span class="nc" id="L101">                painelTabuleiro.add(botoes[i][j]);</span>
+            }
+        }
+
+<span class="nc" id="L105">        painelControles = new JPanel();</span>
+<span class="nc" id="L106">        painelControles.setLayout(new BoxLayout(painelControles, BoxLayout.Y_AXIS));</span>
+<span class="nc" id="L107">        painelControles.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));</span>
+
+<span class="nc" id="L109">        btnGirar = new JButton(&quot;Girar Navio&quot;);</span>
+<span class="nc" id="L110">        btnConfirmar = new JButton(&quot;Confirmar Posição&quot;);</span>
+<span class="nc" id="L111">        btnReiniciar = new JButton(&quot;Reiniciar&quot;);</span>
+<span class="nc" id="L112">        lblNavioAtual = new JLabel(&quot;Posicione seu &quot; + getNomeNavioAtual());</span>
+<span class="nc" id="L113">        lblNavioAtual.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 16));</span>
+<span class="nc" id="L114">    }</span>
+
+    /**
+     * Adiciona os componentes ao painel principal.
+     */
+    private void adicionarComponentes() {
+<span class="nc" id="L120">        painelControles.add(lblNavioAtual);</span>
+<span class="nc" id="L121">        painelControles.add(Box.createRigidArea(new Dimension(0, 20)));</span>
+<span class="nc" id="L122">        painelControles.add(btnGirar);</span>
+<span class="nc" id="L123">        painelControles.add(Box.createRigidArea(new Dimension(0, 10)));</span>
+<span class="nc" id="L124">        painelControles.add(btnConfirmar);</span>
+<span class="nc" id="L125">        painelControles.add(Box.createRigidArea(new Dimension(0, 10)));</span>
+<span class="nc" id="L126">        painelControles.add(btnReiniciar);</span>
+
+<span class="nc" id="L128">        setLayout(new BorderLayout());</span>
+<span class="nc" id="L129">        add(painelTabuleiro, BorderLayout.CENTER);</span>
+<span class="nc" id="L130">        add(painelControles, BorderLayout.EAST);</span>
+<span class="nc" id="L131">    }</span>
+
+    /**
+     * Configura os eventos dos componentes.
+     */
+    private void configurarEventos() {
+<span class="nc" id="L137">        btnGirar.addActionListener(e -&gt; girarNavio());</span>
+<span class="nc" id="L138">        btnConfirmar.addActionListener(e -&gt; confirmarPosicao());</span>
+<span class="nc" id="L139">        btnReiniciar.addActionListener(e -&gt; reiniciarPosicionamento());</span>
+
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        for (int i = 0; i &lt; Tabuleiro.TAMANHO; i++) {</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">            for (int j = 0; j &lt; Tabuleiro.TAMANHO; j++) {</span>
+<span class="nc" id="L143">                final int linha = i;</span>
+<span class="nc" id="L144">                final int coluna = j;</span>
+<span class="nc" id="L145">                botoes[i][j].addActionListener(e -&gt; selecionarPosicao(linha, coluna));</span>
+            }
+        }
+<span class="nc" id="L148">    }</span>
+
+    /**
+     * Retorna o nome do navio atual.
+     * 
+     * @return Nome do navio atual
+     */
+    private String getNomeNavioAtual() {
+<span class="nc" id="L156">        String[] nomes = {&quot;Porta-aviões&quot;, &quot;Encouraçado&quot;, &quot;Cruzador&quot;, &quot;Submarino&quot;, &quot;Destruidor&quot;};</span>
+<span class="nc" id="L157">        return nomes[indiceNavioAtual];</span>
+    }
+
+    /**
+     * Gira o navio atual, alternando entre orientação horizontal e vertical.
+     */
+    private void girarNavio() {
+<span class="nc bnc" id="L164" title="All 2 branches missed.">        navioAtual.setPosicao(navioAtual.getLinha(), navioAtual.getColuna(), !navioAtual.isHorizontal());</span>
+<span class="nc" id="L165">        atualizarTabuleiro();</span>
+<span class="nc" id="L166">    }</span>
+
+    /**
+     * Confirma a posição atual do navio e passa para o próximo.
+     */
+    private void confirmarPosicao() {
+<span class="nc bnc" id="L172" title="All 4 branches missed.">        if (navioAtual.getLinha() == -1 || navioAtual.getColuna() == -1) {</span>
+<span class="nc" id="L173">            JOptionPane.showMessageDialog(this, &quot;Selecione uma posição válida para o navio!&quot;);</span>
+<span class="nc" id="L174">            return;</span>
+        }
+
+<span class="nc bnc" id="L177" title="All 2 branches missed.">        if (tabuleiro.posicionarNavio(navioAtual, navioAtual.getLinha(), navioAtual.getColuna(), navioAtual.isHorizontal())) {</span>
+<span class="nc" id="L178">            indiceNavioAtual++;</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">            if (indiceNavioAtual &lt; navios.length) {</span>
+<span class="nc" id="L180">                navioAtual = navios[indiceNavioAtual];</span>
+<span class="nc" id="L181">                lblNavioAtual.setText(&quot;Posicione seu &quot; + getNomeNavioAtual());</span>
+<span class="nc" id="L182">                atualizarTabuleiro();</span>
+            } else {
+<span class="nc" id="L184">                iniciarJogo();</span>
+            }
+        } else {
+<span class="nc" id="L187">            JOptionPane.showMessageDialog(this, &quot;Posição inválida! Tente novamente.&quot;);</span>
+        }
+<span class="nc" id="L189">    }</span>
+
+    /**
+     * Reinicia o posicionamento dos navios.
+     */
+    private void reiniciarPosicionamento() {
+<span class="nc" id="L195">        tabuleiro = new Tabuleiro();</span>
+<span class="nc" id="L196">        indiceNavioAtual = 0;</span>
+<span class="nc" id="L197">        navioAtual = navios[indiceNavioAtual];</span>
+<span class="nc" id="L198">        lblNavioAtual.setText(&quot;Posicione seu &quot; + getNomeNavioAtual());</span>
+<span class="nc" id="L199">        atualizarTabuleiro();</span>
+<span class="nc" id="L200">    }</span>
+
+    /**
+     * Seleciona uma posição no tabuleiro para o navio atual.
+     * 
+     * @param linha Linha selecionada
+     * @param coluna Coluna selecionada
+     */
+    private void selecionarPosicao(int linha, int coluna) {
+<span class="nc" id="L209">        navioAtual.setPosicao(linha, coluna, navioAtual.isHorizontal());</span>
+<span class="nc" id="L210">        atualizarTabuleiro();</span>
+<span class="nc" id="L211">    }</span>
+
+    /**
+     * Atualiza a interface do tabuleiro.
+     */
+    private void atualizarTabuleiro() {
+<span class="nc bnc" id="L217" title="All 2 branches missed.">        for (int i = 0; i &lt; Tabuleiro.TAMANHO; i++) {</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">            for (int j = 0; j &lt; Tabuleiro.TAMANHO; j++) {</span>
+<span class="nc" id="L219">                botoes[i][j].setBackground(Tabuleiro.COR_AGUA);</span>
+<span class="nc" id="L220">                botoes[i][j].setIcon(null);</span>
+            }
+        }
+
+        // Desenha os navios já posicionados
+<span class="nc bnc" id="L225" title="All 2 branches missed.">        for (int i = 0; i &lt; indiceNavioAtual; i++) {</span>
+<span class="nc" id="L226">            Navio navio = navios[i];</span>
+<span class="nc" id="L227">            int linha = navio.getLinha();</span>
+<span class="nc" id="L228">            int coluna = navio.getColuna();</span>
+<span class="nc" id="L229">            int tamanho = navio.getTamanho();</span>
+
+<span class="nc bnc" id="L231" title="All 2 branches missed.">            if (navio.isHorizontal()) {</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">                for (int j = 0; j &lt; tamanho; j++) {</span>
+<span class="nc" id="L233">                    botoes[linha][coluna + j].setBackground(Tabuleiro.COR_NAVIO);</span>
+                }
+            } else {
+<span class="nc bnc" id="L236" title="All 2 branches missed.">                for (int j = 0; j &lt; tamanho; j++) {</span>
+<span class="nc" id="L237">                    botoes[linha + j][coluna].setBackground(Tabuleiro.COR_NAVIO);</span>
+                }
+            }
+        }
+
+        // Desenha o navio atual
+<span class="nc bnc" id="L243" title="All 4 branches missed.">        if (navioAtual.getLinha() != -1 &amp;&amp; navioAtual.getColuna() != -1) {</span>
+<span class="nc" id="L244">            int linha = navioAtual.getLinha();</span>
+<span class="nc" id="L245">            int coluna = navioAtual.getColuna();</span>
+<span class="nc" id="L246">            int tamanho = navioAtual.getTamanho();</span>
+
+<span class="nc bnc" id="L248" title="All 2 branches missed.">            if (navioAtual.isHorizontal()) {</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">                for (int j = 0; j &lt; tamanho; j++) {</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">                    if (coluna + j &lt; Tabuleiro.TAMANHO) {</span>
+<span class="nc" id="L251">                        botoes[linha][coluna + j].setBackground(Tabuleiro.COR_NAVIO);</span>
+                    }
+                }
+            } else {
+<span class="nc bnc" id="L255" title="All 2 branches missed.">                for (int j = 0; j &lt; tamanho; j++) {</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">                    if (linha + j &lt; Tabuleiro.TAMANHO) {</span>
+<span class="nc" id="L257">                        botoes[linha + j][coluna].setBackground(Tabuleiro.COR_NAVIO);</span>
+                    }
+                }
+            }
+        }
+<span class="nc" id="L262">    }</span>
+
+    /**
+     * Inicia o jogo após o posicionamento dos navios.
+     */
+    private void iniciarJogo() {
+<span class="nc" id="L268">        CampoBatalha campoBatalha = new CampoBatalha(tabuleiro);</span>
+<span class="nc" id="L269">        campoBatalha.setVisible(true);</span>
+<span class="nc" id="L270">        dispose();</span>
+<span class="nc" id="L271">    }</span>
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

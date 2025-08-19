@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Computador.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Batalha Naval</a> &gt; <a href="index.source.html" class="el_package">batalha_naval</a> &gt; <span class="el_source">Computador.java</span></div><h1>Computador.java</h1><pre class="source lang-java linenums">package batalha_naval;
+
+import java.util.Random;
+
+/**
+ * Classe que representa o computador no jogo Batalha Naval.
+ * Herda de Participante e implementa funcionalidades específicas do computador.
+ * 
+ * @author ERIK
+ * @version 1.0.2
+ */
+public class Computador extends Participante {
+    
+    /** Gerador de números aleatórios */
+    private Random random;
+    
+    /** Estratégia de ataque do computador */
+    private EstrategiaAtaque estrategia;
+
+    /**
+     * Construtor da classe Computador.
+     * 
+     * @param tabuleiro Tabuleiro do computador
+     */
+    public Computador(Tabuleiro tabuleiro) {
+<span class="fc" id="L26">        super(&quot;Computador&quot;, tabuleiro);</span>
+<span class="fc" id="L27">        this.random = new Random();</span>
+<span class="fc" id="L28">        this.estrategia = new EstrategiaAleatoria();</span>
+<span class="fc" id="L29">    }</span>
+
+    /**
+     * Construtor da classe Computador com estratégia personalizada.
+     * 
+     * @param tabuleiro Tabuleiro do computador
+     * @param estrategia Estratégia de ataque do computador
+     */
+    public Computador(Tabuleiro tabuleiro, EstrategiaAtaque estrategia) {
+<span class="fc" id="L38">        super(&quot;Computador&quot;, tabuleiro);</span>
+<span class="fc" id="L39">        this.random = new Random();</span>
+<span class="fc" id="L40">        this.estrategia = estrategia;</span>
+<span class="fc" id="L41">    }</span>
+
+    /**
+     * Implementação do método abstrato para posicionar navios.
+     * O computador posiciona os navios aleatoriamente.
+     */
+    @Override
+    public void posicionarNavios() {
+<span class="fc" id="L49">        int[] tamanhos = {5, 4, 3, 3, 2};</span>
+<span class="fc" id="L50">        String[] nomes = {&quot;Porta-aviões&quot;, &quot;Encouraçado&quot;, &quot;Cruzador&quot;, &quot;Submarino&quot;, &quot;Destruidor&quot;};</span>
+
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        for (int i = 0; i &lt; tamanhos.length; i++) {</span>
+<span class="fc" id="L53">            boolean posicionado = false;</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">            while (!posicionado) {</span>
+<span class="fc" id="L55">                int linha = random.nextInt(Tabuleiro.TAMANHO);</span>
+<span class="fc" id="L56">                int coluna = random.nextInt(Tabuleiro.TAMANHO);</span>
+<span class="fc" id="L57">                boolean horizontal = random.nextBoolean();</span>
+
+<span class="fc" id="L59">                Navio navio = new Navio(tamanhos[i]);</span>
+<span class="fc" id="L60">                posicionado = tabuleiro.posicionarNavio(navio, linha, coluna, horizontal);</span>
+<span class="fc" id="L61">            }</span>
+        }
+<span class="fc" id="L63">    }</span>
+
+    /**
+     * Implementação do método abstrato para realizar uma jogada.
+     * O computador escolhe a posição usando sua estratégia de ataque.
+     * 
+     * @param tabuleiroOponente Tabuleiro do oponente
+     * @return true se acertou um navio, false caso contrário
+     */
+    @Override
+    public boolean realizarJogada(Tabuleiro tabuleiroOponente) {
+<span class="fc" id="L74">        int[] posicao = estrategia.escolherPosicao(tabuleiroOponente);</span>
+<span class="fc" id="L75">        int linha = posicao[0];</span>
+<span class="fc" id="L76">        int coluna = posicao[1];</span>
+        
+<span class="fc" id="L78">        boolean acertou = tabuleiroOponente.atacar(linha, coluna);</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if (acertou) {</span>
+<span class="nc" id="L80">            System.out.println(&quot;O computador acertou um navio!&quot;);</span>
+<span class="nc" id="L81">            adicionarPontos(10);</span>
+            
+            // Verifica se destruiu um navio
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            if (verificarNavioDestruido(tabuleiroOponente, linha, coluna)) {</span>
+<span class="nc" id="L85">                navioDestruido();</span>
+<span class="nc" id="L86">                System.out.println(&quot;O computador destruiu um navio! +50 pontos&quot;);</span>
+<span class="nc" id="L87">                adicionarPontos(50);</span>
+            }
+        } else {
+<span class="fc" id="L90">            System.out.println(&quot;O computador atingiu a água!&quot;);</span>
+        }
+        
+<span class="fc" id="L93">        return acertou;</span>
+    }
+
+    /**
+     * Método para realizar jogada com coordenadas específicas.
+     * 
+     * @param tabuleiroOponente Tabuleiro do oponente
+     * @param linha Linha do ataque
+     * @param coluna Coluna do ataque
+     * @return true se acertou um navio, false caso contrário
+     */
+    public boolean realizarJogada(Tabuleiro tabuleiroOponente, int linha, int coluna) {
+<span class="fc bfc" id="L105" title="All 8 branches covered.">        if (linha &lt; 0 || linha &gt;= Tabuleiro.TAMANHO || coluna &lt; 0 || coluna &gt;= Tabuleiro.TAMANHO) {</span>
+<span class="fc" id="L106">            return false;</span>
+        }
+        
+        // Verifica se a posição já foi atacada
+<span class="fc" id="L110">        char posicaoAtual = tabuleiroOponente.getMatriz()[linha][coluna];</span>
+<span class="pc bpc" id="L111" title="1 of 4 branches missed.">        if (posicaoAtual == 'X' || posicaoAtual == 'O') {</span>
+<span class="fc" id="L112">            return false;</span>
+        }
+        
+<span class="fc" id="L115">        boolean acertou = tabuleiroOponente.atacar(linha, coluna);</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        if (acertou) {</span>
+<span class="fc" id="L117">            adicionarPontos(10);</span>
+            
+            // Verifica se destruiu um navio
+<span class="fc bfc" id="L120" title="All 2 branches covered.">            if (verificarNavioDestruido(tabuleiroOponente, linha, coluna)) {</span>
+<span class="fc" id="L121">                navioDestruido();</span>
+<span class="fc" id="L122">                adicionarPontos(50);</span>
+            }
+        }
+        
+<span class="fc" id="L126">        return acertou;</span>
+    }
+
+    /**
+     * Verifica se um navio foi destruído após o ataque.
+     * 
+     * @param tabuleiroOponente Tabuleiro do oponente
+     * @param linha Linha do ataque
+     * @param coluna Coluna do ataque
+     * @return true se um navio foi destruído, false caso contrário
+     */
+    private boolean verificarNavioDestruido(Tabuleiro tabuleiroOponente, int linha, int coluna) {
+        // Verifica se todos os navios no tabuleiro foram destruídos
+<span class="fc" id="L139">        return tabuleiroOponente.todosNaviosDestruidos();</span>
+    }
+
+    /**
+     * Retorna a estratégia de ataque do computador.
+     * 
+     * @return Estratégia de ataque
+     */
+    public EstrategiaAtaque getEstrategia() {
+<span class="fc" id="L148">        return estrategia;</span>
+    }
+
+    /**
+     * Define a estratégia de ataque do computador.
+     * 
+     * @param estrategia Nova estratégia de ataque
+     */
+    public void setEstrategia(EstrategiaAtaque estrategia) {
+<span class="fc" id="L157">        this.estrategia = estrategia;</span>
+<span class="fc" id="L158">    }</span>
+
+    /**
+     * Método para obter estatísticas específicas do computador.
+     * 
+     * @return String com estatísticas do computador
+     */
+    @Override
+    public String getEstatisticas() {
+<span class="fc" id="L167">        return String.format(&quot;Computador: %s | Pontuação: %d | Navios Destruídos: %d | Estratégia: %s&quot;, </span>
+<span class="fc" id="L168">                           nome, pontuacao, naviosDestruidos, estrategia.getClass().getSimpleName());</span>
+    }
+
+    /**
+     * Interface para estratégias de ataque do computador.
+     */
+    public interface EstrategiaAtaque {
+        /**
+         * Escolhe uma posição para atacar.
+         * 
+         * @param tabuleiroOponente Tabuleiro do oponente
+         * @return Array com [linha, coluna] da posição escolhida
+         */
+        int[] escolherPosicao(Tabuleiro tabuleiroOponente);
+    }
+
+    /**
+     * Estratégia de ataque aleatório.
+     */
+<span class="fc" id="L187">    public static class EstrategiaAleatoria implements EstrategiaAtaque {</span>
+<span class="fc" id="L188">        private Random random = new Random();</span>
+        
+        @Override
+        public int[] escolherPosicao(Tabuleiro tabuleiroOponente) {
+            int linha, coluna;
+            do {
+<span class="fc" id="L194">                linha = random.nextInt(Tabuleiro.TAMANHO);</span>
+<span class="fc" id="L195">                coluna = random.nextInt(Tabuleiro.TAMANHO);</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">            } while (posicaoJaAtacada(tabuleiroOponente, linha, coluna));</span>
+            
+<span class="fc" id="L198">            return new int[]{linha, coluna};</span>
+        }
+        
+        private boolean posicaoJaAtacada(Tabuleiro tabuleiro, int linha, int coluna) {
+<span class="fc" id="L202">            char posicao = tabuleiro.getMatriz()[linha][coluna];</span>
+<span class="pc bpc" id="L203" title="2 of 4 branches missed.">            return posicao == 'X' || posicao == 'O';</span>
+        }
+    }
+
+    /**
+     * Estratégia de ataque inteligente (futura implementação).
+     */
+<span class="fc" id="L210">    public static class EstrategiaInteligente implements EstrategiaAtaque {</span>
+        @Override
+        public int[] escolherPosicao(Tabuleiro tabuleiroOponente) {
+            // Implementação futura de estratégia inteligente
+            // Por enquanto, usa estratégia aleatória
+<span class="fc" id="L215">            return new EstrategiaAleatoria().escolherPosicao(tabuleiroOponente);</span>
+        }
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

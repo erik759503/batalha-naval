@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BatalhaNaval.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Batalha Naval</a> &gt; <a href="index.source.html" class="el_package">batalha_naval</a> &gt; <span class="el_source">BatalhaNaval.java</span></div><h1>BatalhaNaval.java</h1><pre class="source lang-java linenums">package batalha_naval;
+
+import java.util.Scanner;
+
+/**
+ * Classe principal do jogo Batalha Naval.
+ * Gerencia o fluxo do jogo, incluindo a inicialização dos tabuleiros,
+ * posicionamento dos navios e as jogadas dos jogadores.
+ * 
+ * @author ERIK
+ * @version 1.0.2
+ */
+public class BatalhaNaval {
+    /** Tabuleiro do jogador humano */
+    private Tabuleiro tabuleiroJogador;
+    
+    /** Tabuleiro do computador */
+    private Tabuleiro tabuleiroComputador;
+    
+    /** Instância do jogador humano */
+    private Jogador jogador;
+    
+    /** Instância do computador */
+    private Computador computador;
+    
+    /** Scanner para entrada do usuário */
+    private Scanner scanner;
+
+    /**
+     * Construtor da classe BatalhaNaval.
+     * Inicializa os tabuleiros, jogadores e o scanner para entrada.
+     */
+<span class="fc" id="L33">    public BatalhaNaval() {</span>
+<span class="fc" id="L34">        tabuleiroJogador = new Tabuleiro();</span>
+<span class="fc" id="L35">        tabuleiroComputador = new Tabuleiro();</span>
+<span class="fc" id="L36">        scanner = new Scanner(System.in);</span>
+<span class="fc" id="L37">        jogador = new Jogador(&quot;Jogador&quot;, tabuleiroJogador, scanner);</span>
+<span class="fc" id="L38">        computador = new Computador(tabuleiroComputador);</span>
+<span class="fc" id="L39">    }</span>
+
+    /**
+     * Inicia o jogo Batalha Naval.
+     * Gerencia o fluxo do jogo, incluindo:
+     * - Posicionamento dos navios
+     * - Alternância entre jogadas do jogador e computador
+     * - Verificação de vitória
+     */
+    public void iniciarJogo() {
+<span class="nc" id="L49">        System.out.println(&quot;Bem-vindo à Batalha Naval!&quot;);</span>
+<span class="nc" id="L50">        System.out.println(&quot;Posicione seus navios:&quot;);</span>
+        
+<span class="nc" id="L52">        jogador.posicionarNavios();</span>
+<span class="nc" id="L53">        computador.posicionarNavios();</span>
+
+        while (true) {
+            // Vez do jogador
+<span class="nc" id="L57">            System.out.println(&quot;\nSeu tabuleiro:&quot;);</span>
+<span class="nc" id="L58">            tabuleiroJogador.mostrarTabuleiro(false);</span>
+<span class="nc" id="L59">            System.out.println(&quot;\nTabuleiro do computador:&quot;);</span>
+<span class="nc" id="L60">            tabuleiroComputador.mostrarTabuleiro(true);</span>
+
+<span class="nc" id="L62">            jogador.realizarJogada(tabuleiroComputador);</span>
+            
+<span class="nc bnc" id="L64" title="All 2 branches missed.">            if (jogador.venceu(tabuleiroComputador)) {</span>
+<span class="nc" id="L65">                System.out.println(&quot;Parabéns! Você venceu!&quot;);</span>
+<span class="nc" id="L66">                System.out.println(&quot;Sua pontuação: &quot; + jogador.getPontuacao());</span>
+<span class="nc" id="L67">                System.out.println(&quot;Navios destruídos: &quot; + jogador.getNaviosDestruidos());</span>
+<span class="nc" id="L68">                break;</span>
+            }
+
+            // Vez do computador
+<span class="nc" id="L72">            computador.realizarJogada(tabuleiroJogador);</span>
+            
+<span class="nc bnc" id="L74" title="All 2 branches missed.">            if (computador.venceu(tabuleiroJogador)) {</span>
+<span class="nc" id="L75">                System.out.println(&quot;O computador venceu!&quot;);</span>
+<span class="nc" id="L76">                System.out.println(&quot;Pontuação do computador: &quot; + computador.getPontuacao());</span>
+<span class="nc" id="L77">                System.out.println(&quot;Navios destruídos pelo computador: &quot; + computador.getNaviosDestruidos());</span>
+<span class="nc" id="L78">                break;</span>
+            }
+        }
+<span class="nc" id="L81">        scanner.close();</span>
+<span class="nc" id="L82">    }</span>
+
+    /**
+     * Método principal que inicia o jogo.
+     * 
+     * @param args Argumentos da linha de comando (não utilizados)
+     */
+    public static void main(String[] args) {
+<span class="nc" id="L90">        BatalhaNaval jogo = new BatalhaNaval();</span>
+<span class="nc" id="L91">        jogo.iniciarJogo();</span>
+<span class="nc" id="L92">    }</span>
+
+    public Tabuleiro getTabuleiroJogador() {
+<span class="fc" id="L95">        return tabuleiroJogador;</span>
+    }
+
+    public Tabuleiro getTabuleiroComputador() {
+<span class="fc" id="L99">        return tabuleiroComputador;</span>
+    }
+
+    public Jogador getJogador() {
+<span class="fc" id="L103">        return jogador;</span>
+    }
+
+    public Computador getComputador() {
+<span class="fc" id="L107">        return computador;</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

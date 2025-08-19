@@ -1,0 +1,14 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Batalha Naval,batalha_naval,TelaPosicionamento,667,0,44,0,112,0,39,0,17,0
+Batalha Naval,batalha_naval,TelaFinal,41,346,0,2,13,61,7,6,7,5
+Batalha Naval,batalha_naval,TelaInicial,38,229,0,0,12,46,7,5,7,5
+Batalha Naval,batalha_naval,CampoBatalha,218,372,20,16,50,70,18,13,7,6
+Batalha Naval,batalha_naval,BatalhaNaval,93,48,4,0,25,11,4,5,2,5
+Batalha Naval,batalha_naval,Computador.EstrategiaAleatoria,2,50,3,3,0,8,3,3,0,3
+Batalha Naval,batalha_naval,Participante,22,63,0,0,2,20,1,11,1,11
+Batalha Naval,batalha_naval,Computador,21,231,4,20,6,45,3,18,0,9
+Batalha Naval,batalha_naval,TelaBase,55,233,4,2,18,61,8,13,6,12
+Batalha Naval,batalha_naval,Jogador,219,95,27,15,47,22,16,14,2,7
+Batalha Naval,batalha_naval,Tabuleiro,61,278,13,47,15,54,9,31,1,9
+Batalha Naval,batalha_naval,Computador.EstrategiaInteligente,0,9,0,0,0,2,0,2,0,2
+Batalha Naval,batalha_naval,Navio,0,170,0,32,0,33,0,25,0,9

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Jogador.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Batalha Naval</a> &gt; <a href="index.source.html" class="el_package">batalha_naval</a> &gt; <span class="el_source">Jogador.java</span></div><h1>Jogador.java</h1><pre class="source lang-java linenums">package batalha_naval;
+
+import java.util.Scanner;
+
+/**
+ * Classe que representa o jogador humano no jogo Batalha Naval.
+ * Herda de Participante e implementa funcionalidades específicas do jogador humano.
+ * 
+ * @author ERIK
+ * @version 1.0.2
+ */
+public class Jogador extends Participante {
+    
+    /** Scanner para entrada do usuário */
+    private Scanner scanner;
+
+    /**
+     * Construtor da classe Jogador.
+     * 
+     * @param nome Nome do jogador
+     * @param tabuleiro Tabuleiro do jogador
+     */
+    public Jogador(String nome, Tabuleiro tabuleiro) {
+<span class="fc" id="L24">        super(nome, tabuleiro);</span>
+<span class="fc" id="L25">        this.scanner = new Scanner(System.in);</span>
+<span class="fc" id="L26">    }</span>
+
+    /**
+     * Construtor da classe Jogador com scanner personalizado.
+     * 
+     * @param nome Nome do jogador
+     * @param tabuleiro Tabuleiro do jogador
+     * @param scanner Scanner para entrada do usuário
+     */
+    public Jogador(String nome, Tabuleiro tabuleiro, Scanner scanner) {
+<span class="fc" id="L36">        super(nome, tabuleiro);</span>
+<span class="fc" id="L37">        this.scanner = scanner;</span>
+<span class="fc" id="L38">    }</span>
+
+    /**
+     * Implementação do método abstrato para posicionar navios.
+     * O jogador humano posiciona os navios através de entrada do console.
+     */
+    @Override
+    public void posicionarNavios() {
+<span class="nc" id="L46">        int[] tamanhos = {5, 4, 3, 3, 2};</span>
+<span class="nc" id="L47">        String[] nomes = {&quot;Porta-aviões&quot;, &quot;Encouraçado&quot;, &quot;Cruzador&quot;, &quot;Submarino&quot;, &quot;Destruidor&quot;};</span>
+
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        for (int i = 0; i &lt; tamanhos.length; i++) {</span>
+<span class="nc" id="L50">            boolean posicionado = false;</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">            while (!posicionado) {</span>
+<span class="nc" id="L52">                System.out.println(&quot;\nPosicione seu &quot; + nomes[i] + &quot; (tamanho &quot; + tamanhos[i] + &quot;)&quot;);</span>
+<span class="nc" id="L53">                System.out.println(&quot;Digite a linha (0-9):&quot;);</span>
+<span class="nc" id="L54">                int linha = scanner.nextInt();</span>
+<span class="nc" id="L55">                System.out.println(&quot;Digite a coluna (0-9):&quot;);</span>
+<span class="nc" id="L56">                int coluna = scanner.nextInt();</span>
+<span class="nc" id="L57">                System.out.println(&quot;Digite a orientação (H para horizontal, V para vertical):&quot;);</span>
+<span class="nc" id="L58">                char orientacao = scanner.next().toUpperCase().charAt(0);</span>
+
+<span class="nc" id="L60">                Navio navio = new Navio(tamanhos[i]);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">                posicionado = tabuleiro.posicionarNavio(navio, linha, coluna, orientacao == 'H');</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">                if (!posicionado) {</span>
+<span class="nc" id="L63">                    System.out.println(&quot;Posição inválida! Tente novamente.&quot;);</span>
+                }
+<span class="nc" id="L65">            }</span>
+<span class="nc" id="L66">            tabuleiro.mostrarTabuleiro(false);</span>
+        }
+<span class="nc" id="L68">    }</span>
+
+    /**
+     * Implementação do método abstrato para realizar uma jogada.
+     * O jogador humano escolhe a posição através de entrada do console.
+     * 
+     * @param tabuleiroOponente Tabuleiro do oponente
+     * @return true se acertou um navio, false caso contrário
+     */
+    @Override
+    public boolean realizarJogada(Tabuleiro tabuleiroOponente) {
+<span class="nc" id="L79">        boolean jogadaValida = false;</span>
+<span class="nc" id="L80">        int linha = 0, coluna = 0;</span>
+        
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        while (!jogadaValida) {</span>
+<span class="nc" id="L83">            System.out.println(&quot;\nSua vez de atacar!&quot;);</span>
+<span class="nc" id="L84">            System.out.println(&quot;Digite a linha (0-9):&quot;);</span>
+<span class="nc" id="L85">            linha = scanner.nextInt();</span>
+<span class="nc" id="L86">            System.out.println(&quot;Digite a coluna (0-9):&quot;);</span>
+<span class="nc" id="L87">            coluna = scanner.nextInt();</span>
+
+<span class="nc bnc" id="L89" title="All 8 branches missed.">            if (linha &gt;= 0 &amp;&amp; linha &lt; Tabuleiro.TAMANHO &amp;&amp; coluna &gt;= 0 &amp;&amp; coluna &lt; Tabuleiro.TAMANHO) {</span>
+                // Verifica se a posição já foi atacada
+<span class="nc" id="L91">                char posicaoAtual = tabuleiroOponente.getMatriz()[linha][coluna];</span>
+<span class="nc bnc" id="L92" title="All 4 branches missed.">                if (posicaoAtual == 'X' || posicaoAtual == 'O') {</span>
+<span class="nc" id="L93">                    System.out.println(&quot;Você já atirou nesta posição! Escolha outra.&quot;);</span>
+<span class="nc" id="L94">                    continue;</span>
+                }
+<span class="nc" id="L96">                jogadaValida = true;</span>
+<span class="nc" id="L97">            } else {</span>
+<span class="nc" id="L98">                System.out.println(&quot;Posição inválida! Tente novamente.&quot;);</span>
+            }
+        }
+        
+<span class="nc" id="L102">        boolean acertou = tabuleiroOponente.atacar(linha, coluna);</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (acertou) {</span>
+<span class="nc" id="L104">            System.out.println(&quot;Você acertou um navio!&quot;);</span>
+<span class="nc" id="L105">            adicionarPontos(10);</span>
+            
+            // Verifica se destruiu um navio
+<span class="nc bnc" id="L108" title="All 2 branches missed.">            if (verificarNavioDestruido(tabuleiroOponente, linha, coluna)) {</span>
+<span class="nc" id="L109">                navioDestruido();</span>
+<span class="nc" id="L110">                System.out.println(&quot;Navio destruído! +50 pontos&quot;);</span>
+<span class="nc" id="L111">                adicionarPontos(50);</span>
+            }
+        } else {
+<span class="nc" id="L114">            System.out.println(&quot;Você atingiu a água!&quot;);</span>
+        }
+        
+<span class="nc" id="L117">        return acertou;</span>
+    }
+
+    /**
+     * Método para realizar jogada com coordenadas específicas (usado pela interface gráfica).
+     * 
+     * @param tabuleiroOponente Tabuleiro do oponente
+     * @param linha Linha do ataque
+     * @param coluna Coluna do ataque
+     * @return true se acertou um navio, false caso contrário
+     */
+    public boolean realizarJogada(Tabuleiro tabuleiroOponente, int linha, int coluna) {
+<span class="fc bfc" id="L129" title="All 8 branches covered.">        if (linha &lt; 0 || linha &gt;= Tabuleiro.TAMANHO || coluna &lt; 0 || coluna &gt;= Tabuleiro.TAMANHO) {</span>
+<span class="fc" id="L130">            return false;</span>
+        }
+        
+        // Verifica se a posição já foi atacada
+<span class="fc" id="L134">        char posicaoAtual = tabuleiroOponente.getMatriz()[linha][coluna];</span>
+<span class="fc bfc" id="L135" title="All 4 branches covered.">        if (posicaoAtual == 'X' || posicaoAtual == 'O') {</span>
+<span class="fc" id="L136">            return false;</span>
+        }
+        
+<span class="fc" id="L139">        boolean acertou = tabuleiroOponente.atacar(linha, coluna);</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">        if (acertou) {</span>
+<span class="fc" id="L141">            adicionarPontos(10);</span>
+            
+            // Verifica se destruiu um navio
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">            if (verificarNavioDestruido(tabuleiroOponente, linha, coluna)) {</span>
+<span class="nc" id="L145">                navioDestruido();</span>
+<span class="nc" id="L146">                adicionarPontos(50);</span>
+            }
+        }
+        
+<span class="fc" id="L150">        return acertou;</span>
+    }
+
+    /**
+     * Verifica se um navio foi destruído após o ataque.
+     * 
+     * @param tabuleiroOponente Tabuleiro do oponente
+     * @param linha Linha do ataque
+     * @param coluna Coluna do ataque
+     * @return true se um navio foi destruído, false caso contrário
+     */
+    private boolean verificarNavioDestruido(Tabuleiro tabuleiroOponente, int linha, int coluna) {
+        // Esta é uma implementação simplificada
+        // Em uma versão mais completa, você verificaria se todas as partes do navio foram atingidas
+<span class="fc" id="L164">        return false; // Placeholder</span>
+    }
+
+    /**
+     * Retorna o scanner usado pelo jogador.
+     * 
+     * @return Scanner do jogador
+     */
+    public Scanner getScanner() {
+<span class="fc" id="L173">        return scanner;</span>
+    }
+
+    /**
+     * Define o scanner usado pelo jogador.
+     * 
+     * @param scanner Novo scanner
+     */
+    public void setScanner(Scanner scanner) {
+<span class="fc" id="L182">        this.scanner = scanner;</span>
+<span class="fc" id="L183">    }</span>
+
+    /**
+     * Método para obter estatísticas específicas do jogador.
+     * 
+     * @return String com estatísticas do jogador
+     */
+    @Override
+    public String getEstatisticas() {
+<span class="fc" id="L192">        return String.format(&quot;Jogador: %s | Pontuação: %d | Navios Destruídos: %d&quot;, </span>
+<span class="fc" id="L193">                           nome, pontuacao, naviosDestruidos);</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

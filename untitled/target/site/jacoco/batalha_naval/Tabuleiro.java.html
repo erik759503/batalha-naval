@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Tabuleiro.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Batalha Naval</a> &gt; <a href="index.source.html" class="el_package">batalha_naval</a> &gt; <span class="el_source">Tabuleiro.java</span></div><h1>Tabuleiro.java</h1><pre class="source lang-java linenums">package batalha_naval;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Classe que representa o tabuleiro do jogo Batalha Naval.
+ * Gerencia a matriz do tabuleiro, navios e suas posições.
+ * 
+ * @author ERIK
+ * @version 1.0.2
+ */
+public class Tabuleiro {
+    /** Tamanho do tabuleiro (10x10) */
+    public static final int TAMANHO = 10;
+    
+    /** Tamanho de cada célula do tabuleiro em pixels */
+    public static final int TAMANHO_CELULA = 40;
+    
+    /** Cores do tabuleiro */
+<span class="fc" id="L21">    public static final java.awt.Color COR_AGUA = new java.awt.Color(0, 105, 148);</span>
+<span class="fc" id="L22">    public static final java.awt.Color COR_NAVIO = new java.awt.Color(128, 128, 128);</span>
+<span class="fc" id="L23">    public static final java.awt.Color COR_ACERTO = new java.awt.Color(255, 0, 0);</span>
+<span class="fc" id="L24">    public static final java.awt.Color COR_ERRO = new java.awt.Color(255, 255, 255);</span>
+    
+    /** Matriz que representa o tabuleiro */
+    private char[][] matriz;
+    
+    /** Lista de navios posicionados no tabuleiro */
+    private List&lt;Navio&gt; navios;
+
+    /**
+     * Construtor da classe Tabuleiro.
+     * Inicializa a matriz do tabuleiro e a lista de navios.
+     */
+<span class="fc" id="L36">    public Tabuleiro() {</span>
+<span class="fc" id="L37">        matriz = new char[TAMANHO][TAMANHO];</span>
+<span class="fc" id="L38">        navios = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L39">        inicializarTabuleiro();</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * Inicializa o tabuleiro com água em todas as posições.
+     */
+    private void inicializarTabuleiro() {
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        for (int i = 0; i &lt; TAMANHO; i++) {</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">            for (int j = 0; j &lt; TAMANHO; j++) {</span>
+<span class="fc" id="L48">                matriz[i][j] = '~';</span>
+            }
+        }
+<span class="fc" id="L51">    }</span>
+
+    /**
+     * Verifica se uma posição está dentro dos limites do tabuleiro.
+     * 
+     * @param linha Linha a ser verificada
+     * @param coluna Coluna a ser verificada
+     * @return true se a posição é válida, false caso contrário
+     */
+    public boolean posicaoValida(int linha, int coluna) {
+<span class="fc bfc" id="L61" title="All 8 branches covered.">        return linha &gt;= 0 &amp;&amp; linha &lt; TAMANHO &amp;&amp; coluna &gt;= 0 &amp;&amp; coluna &lt; TAMANHO;</span>
+    }
+
+    /**
+     * Verifica se uma posição está ocupada por um navio.
+     * 
+     * @param linha Linha a ser verificada
+     * @param coluna Coluna a ser verificada
+     * @return true se a posição está ocupada, false caso contrário
+     */
+    public boolean posicaoOcupada(int linha, int coluna) {
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        return matriz[linha][coluna] != '~';</span>
+    }
+
+    /**
+     * Posiciona um navio no tabuleiro.
+     * 
+     * @param navio Navio a ser posicionado
+     * @param linha Linha inicial do navio
+     * @param coluna Coluna inicial do navio
+     * @param horizontal true se o navio deve ser posicionado horizontalmente
+     * @return true se o navio foi posicionado com sucesso, false caso contrário
+     */
+    public boolean posicionarNavio(Navio navio, int linha, int coluna, boolean horizontal) {
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        if (!posicaoValida(linha, coluna)) {</span>
+<span class="nc" id="L86">            return false;</span>
+        }
+
+<span class="fc" id="L89">        int tamanho = navio.getTamanho();</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (horizontal) {</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">            if (coluna + tamanho &gt; TAMANHO) {</span>
+<span class="fc" id="L92">                return false;</span>
+            }
+<span class="fc bfc" id="L94" title="All 2 branches covered.">            for (int i = 0; i &lt; tamanho; i++) {</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">                if (posicaoOcupada(linha, coluna + i)) {</span>
+<span class="fc" id="L96">                    return false;</span>
+                }
+            }
+<span class="fc bfc" id="L99" title="All 2 branches covered.">            for (int i = 0; i &lt; tamanho; i++) {</span>
+<span class="fc" id="L100">                matriz[linha][coluna + i] = 'N';</span>
+            }
+        } else {
+<span class="fc bfc" id="L103" title="All 2 branches covered.">            if (linha + tamanho &gt; TAMANHO) {</span>
+<span class="fc" id="L104">                return false;</span>
+            }
+<span class="fc bfc" id="L106" title="All 2 branches covered.">            for (int i = 0; i &lt; tamanho; i++) {</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">                if (posicaoOcupada(linha + i, coluna)) {</span>
+<span class="fc" id="L108">                    return false;</span>
+                }
+            }
+<span class="fc bfc" id="L111" title="All 2 branches covered.">            for (int i = 0; i &lt; tamanho; i++) {</span>
+<span class="fc" id="L112">                matriz[linha + i][coluna] = 'N';</span>
+            }
+        }
+
+<span class="fc" id="L116">        navio.setPosicao(linha, coluna, horizontal);</span>
+<span class="fc" id="L117">        navios.add(navio);</span>
+<span class="fc" id="L118">        return true;</span>
+    }
+
+    /**
+     * Realiza um ataque em uma posição do tabuleiro.
+     * 
+     * @param linha Linha do ataque
+     * @param coluna Coluna do ataque
+     * @return true se o ataque acertou um navio, false caso contrário
+     */
+    public boolean atacar(int linha, int coluna) {
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        if (!posicaoValida(linha, coluna)) {</span>
+<span class="nc" id="L130">            return false;</span>
+        }
+
+<span class="fc bfc" id="L133" title="All 2 branches covered.">        if (matriz[linha][coluna] == 'N') {</span>
+<span class="fc" id="L134">            matriz[linha][coluna] = 'X';</span>
+            // Registra o tiro no navio correspondente
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">            for (Navio navio : navios) {</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">                if (navio.receberTiro(linha, coluna)) {</span>
+<span class="fc" id="L138">                    break; // Encontrou o navio, pode parar</span>
+                }
+<span class="fc" id="L140">            }</span>
+<span class="fc" id="L141">            return true;</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">        } else if (matriz[linha][coluna] == '~') {</span>
+<span class="fc" id="L143">            matriz[linha][coluna] = 'O';</span>
+        }
+<span class="fc" id="L145">        return false;</span>
+    }
+
+    /**
+     * Verifica se todos os navios foram destruídos.
+     * 
+     * @return true se todos os navios foram destruídos, false caso contrário
+     */
+    public boolean todosNaviosDestruidos() {
+<span class="fc bfc" id="L154" title="All 2 branches covered.">        if (navios.isEmpty()) {</span>
+<span class="fc" id="L155">            return false;</span>
+        }
+<span class="fc bfc" id="L157" title="All 2 branches covered.">        for (Navio navio : navios) {</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">            if (!navio.estaDestruido()) {</span>
+<span class="fc" id="L159">                return false;</span>
+            }
+<span class="fc" id="L161">        }</span>
+<span class="fc" id="L162">        return true;</span>
+    }
+
+    /**
+     * Mostra o tabuleiro no console.
+     * 
+     * @param esconderNavios true para esconder os navios não atingidos, false para mostrar
+     */
+    public void mostrarTabuleiro(boolean esconderNavios) {
+<span class="nc" id="L171">        System.out.print(&quot;  &quot;);</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">        for (int i = 0; i &lt; TAMANHO; i++) {</span>
+<span class="nc" id="L173">            System.out.print(i + &quot; &quot;);</span>
+        }
+<span class="nc" id="L175">        System.out.println();</span>
+
+<span class="nc bnc" id="L177" title="All 2 branches missed.">        for (int i = 0; i &lt; TAMANHO; i++) {</span>
+<span class="nc" id="L178">            System.out.print(i + &quot; &quot;);</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">            for (int j = 0; j &lt; TAMANHO; j++) {</span>
+<span class="nc" id="L180">                char c = matriz[i][j];</span>
+<span class="nc bnc" id="L181" title="All 4 branches missed.">                if (esconderNavios &amp;&amp; c == 'N') {</span>
+<span class="nc" id="L182">                    System.out.print(&quot;~ &quot;);</span>
+                } else {
+<span class="nc" id="L184">                    System.out.print(c + &quot; &quot;);</span>
+                }
+            }
+<span class="nc" id="L187">            System.out.println();</span>
+        }
+<span class="nc" id="L189">    }</span>
+
+    /**
+     * Retorna a matriz do tabuleiro.
+     * 
+     * @return Matriz do tabuleiro
+     */
+    public char[][] getMatriz() {
+<span class="fc" id="L197">        return matriz;</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

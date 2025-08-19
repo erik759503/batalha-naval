@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TelaFinal.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Batalha Naval</a> &gt; <a href="index.source.html" class="el_package">batalha_naval</a> &gt; <span class="el_source">TelaFinal.java</span></div><h1>TelaFinal.java</h1><pre class="source lang-java linenums">package batalha_naval;
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * Classe que representa a tela final do jogo.
+ * Exibe o resultado da partida e opções para continuar.
+ * 
+ * @author ERIK
+ * @version 1.0.2
+ */
+public class TelaFinal extends JFrame {
+    /** Botão para jogar novamente */
+    private JButton btnJogarNovamente;
+    
+    /** Botão para voltar ao menu */
+    private JButton btnVoltarMenu;
+    
+    /** Botão para sair do jogo */
+    private JButton btnSair;
+    
+    /** Painel principal da tela */
+    private JPanel painelPrincipal;
+    
+    /** Label que mostra o resultado */
+    private JLabel lblResultado;
+
+    /**
+     * Construtor da classe TelaFinal.
+     * 
+     * @param vitoria true se o jogador venceu, false se perdeu
+     */
+<span class="fc" id="L34">    public TelaFinal(boolean vitoria) {</span>
+<span class="fc" id="L35">        configurarJanela();</span>
+<span class="fc" id="L36">        criarComponentes(vitoria);</span>
+<span class="fc" id="L37">        adicionarComponentes();</span>
+<span class="fc" id="L38">        configurarEventos();</span>
+<span class="fc" id="L39">    }</span>
+
+    /**
+     * Configura as propriedades da janela.
+     */
+    private void configurarJanela() {
+<span class="fc" id="L45">        setTitle(&quot;Fim de Jogo - Batalha Naval&quot;);</span>
+<span class="fc" id="L46">        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="fc" id="L47">        setExtendedState(JFrame.MAXIMIZED_BOTH);</span>
+<span class="fc" id="L48">        setLocationRelativeTo(null);</span>
+<span class="fc" id="L49">        setResizable(false);</span>
+<span class="fc" id="L50">    }</span>
+
+    /**
+     * Cria os componentes da interface.
+     * 
+     * @param vitoria true se o jogador venceu, false se perdeu
+     */
+    private void criarComponentes(boolean vitoria) {
+<span class="fc" id="L58">        painelPrincipal = new JPanel();</span>
+<span class="fc" id="L59">        painelPrincipal.setLayout(new GridBagLayout());</span>
+<span class="fc" id="L60">        painelPrincipal.setBackground(new Color(0, 105, 148));</span>
+
+        // Configura o texto do resultado
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (vitoria) {</span>
+<span class="fc" id="L64">            lblResultado = new JLabel(&quot;PARABÉNS! VOCÊ VENCEU!&quot;);</span>
+<span class="fc" id="L65">            lblResultado.setForeground(new Color(0, 255, 0)); // Verde para vitória</span>
+        } else {
+<span class="fc" id="L67">            lblResultado = new JLabel(&quot;GAME OVER! VOCÊ PERDEU!&quot;);</span>
+<span class="fc" id="L68">            lblResultado.setForeground(new Color(255, 0, 0)); // Vermelho para derrota</span>
+        }
+<span class="fc" id="L70">        lblResultado.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 36));</span>
+<span class="fc" id="L71">        lblResultado.setHorizontalAlignment(SwingConstants.CENTER);</span>
+
+<span class="fc" id="L73">        btnJogarNovamente = new JButton(&quot;Jogar Novamente&quot;);</span>
+<span class="fc" id="L74">        btnJogarNovamente.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 18));</span>
+<span class="fc" id="L75">        btnJogarNovamente.setBackground(new Color(255, 255, 255));</span>
+<span class="fc" id="L76">        btnJogarNovamente.setForeground(new Color(0, 105, 148));</span>
+<span class="fc" id="L77">        btnJogarNovamente.setPreferredSize(new Dimension(200, 50));</span>
+
+<span class="fc" id="L79">        btnVoltarMenu = new JButton(&quot;Voltar ao Menu&quot;);</span>
+<span class="fc" id="L80">        btnVoltarMenu.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 18));</span>
+<span class="fc" id="L81">        btnVoltarMenu.setBackground(new Color(255, 255, 255));</span>
+<span class="fc" id="L82">        btnVoltarMenu.setForeground(new Color(0, 105, 148));</span>
+<span class="fc" id="L83">        btnVoltarMenu.setPreferredSize(new Dimension(200, 50));</span>
+
+<span class="fc" id="L85">        btnSair = new JButton(&quot;Sair do Jogo&quot;);</span>
+<span class="fc" id="L86">        btnSair.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 18));</span>
+<span class="fc" id="L87">        btnSair.setBackground(new Color(255, 255, 255));</span>
+<span class="fc" id="L88">        btnSair.setForeground(new Color(0, 105, 148));</span>
+<span class="fc" id="L89">        btnSair.setPreferredSize(new Dimension(200, 50));</span>
+<span class="fc" id="L90">    }</span>
+
+    /**
+     * Adiciona os componentes ao painel principal.
+     */
+    private void adicionarComponentes() {
+<span class="fc" id="L96">        GridBagConstraints gbc = new GridBagConstraints();</span>
+<span class="fc" id="L97">        gbc.gridwidth = GridBagConstraints.REMAINDER;</span>
+<span class="fc" id="L98">        gbc.fill = GridBagConstraints.HORIZONTAL;</span>
+<span class="fc" id="L99">        gbc.insets = new Insets(20, 50, 20, 50);</span>
+
+        // Título do jogo
+<span class="fc" id="L102">        JLabel titulo = new JLabel(&quot;BATALHA NAVAL&quot;);</span>
+<span class="fc" id="L103">        titulo.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 48));</span>
+<span class="fc" id="L104">        titulo.setForeground(Color.WHITE);</span>
+<span class="fc" id="L105">        titulo.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="fc" id="L106">        painelPrincipal.add(titulo, gbc);</span>
+
+        // Espaço
+<span class="fc" id="L109">        painelPrincipal.add(Box.createRigidArea(new Dimension(0, 50)), gbc);</span>
+
+        // Resultado
+<span class="fc" id="L112">        painelPrincipal.add(lblResultado, gbc);</span>
+
+        // Espaço
+<span class="fc" id="L115">        painelPrincipal.add(Box.createRigidArea(new Dimension(0, 80)), gbc);</span>
+
+        // Botões
+<span class="fc" id="L118">        painelPrincipal.add(btnJogarNovamente, gbc);</span>
+<span class="fc" id="L119">        painelPrincipal.add(Box.createRigidArea(new Dimension(0, 20)), gbc);</span>
+<span class="fc" id="L120">        painelPrincipal.add(btnVoltarMenu, gbc);</span>
+<span class="fc" id="L121">        painelPrincipal.add(Box.createRigidArea(new Dimension(0, 20)), gbc);</span>
+<span class="fc" id="L122">        painelPrincipal.add(btnSair, gbc);</span>
+
+<span class="fc" id="L124">        add(painelPrincipal);</span>
+<span class="fc" id="L125">    }</span>
+
+    /**
+     * Configura os eventos dos componentes.
+     */
+    private void configurarEventos() {
+<span class="pc" id="L131">        btnJogarNovamente.addActionListener(e -&gt; jogarNovamente());</span>
+<span class="pc" id="L132">        btnVoltarMenu.addActionListener(e -&gt; voltarAoMenu());</span>
+<span class="pc" id="L133">        btnSair.addActionListener(e -&gt; System.exit(0));</span>
+<span class="fc" id="L134">    }</span>
+
+    /**
+     * Inicia um novo jogo.
+     */
+    private void jogarNovamente() {
+<span class="nc" id="L140">        TelaPosicionamento telaPosicionamento = new TelaPosicionamento();</span>
+<span class="nc" id="L141">        telaPosicionamento.setVisible(true);</span>
+<span class="nc" id="L142">        dispose();</span>
+<span class="nc" id="L143">    }</span>
+
+    /**
+     * Volta para o menu inicial.
+     */
+    private void voltarAoMenu() {
+<span class="nc" id="L149">        TelaInicial telaInicial = new TelaInicial();</span>
+<span class="nc" id="L150">        telaInicial.setVisible(true);</span>
+<span class="nc" id="L151">        dispose();</span>
+<span class="nc" id="L152">    }</span>
+
+    /**
+     * Método principal para testar a tela final.
+     * 
+     * @param args Argumentos da linha de comando (não utilizados)
+     */
+    public static void main(String[] args) {
+<span class="nc" id="L160">        SwingUtilities.invokeLater(() -&gt; {</span>
+<span class="nc" id="L161">            TelaFinal telaFinal = new TelaFinal(true); // true para vitória, false para derrota</span>
+<span class="nc" id="L162">            telaFinal.setVisible(true);</span>
+<span class="nc" id="L163">        });</span>
+<span class="nc" id="L164">    }</span>
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

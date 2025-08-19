@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Participante.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Batalha Naval</a> &gt; <a href="index.source.html" class="el_package">batalha_naval</a> &gt; <span class="el_source">Participante.java</span></div><h1>Participante.java</h1><pre class="source lang-java linenums">package batalha_naval;
+
+/**
+ * Classe base abstrata que representa um participante no jogo Batalha Naval.
+ * Define funcionalidades comuns entre jogador humano e computador.
+ * 
+ * @author ERIK
+ * @version 1.0.2
+ */
+public abstract class Participante {
+    
+    /** Nome do participante */
+    protected String nome;
+    
+    /** Tabuleiro do participante */
+    protected Tabuleiro tabuleiro;
+    
+    /** Pontuação do participante */
+    protected int pontuacao;
+    
+    /** Número de navios destruídos */
+    protected int naviosDestruidos;
+
+    /**
+     * Construtor da classe Participante.
+     * 
+     * @param nome Nome do participante
+     * @param tabuleiro Tabuleiro do participante
+     */
+<span class="fc" id="L30">    public Participante(String nome, Tabuleiro tabuleiro) {</span>
+<span class="fc" id="L31">        this.nome = nome;</span>
+<span class="fc" id="L32">        this.tabuleiro = tabuleiro;</span>
+<span class="fc" id="L33">        this.pontuacao = 0;</span>
+<span class="fc" id="L34">        this.naviosDestruidos = 0;</span>
+<span class="fc" id="L35">    }</span>
+
+    /**
+     * Método abstrato para posicionar navios no tabuleiro.
+     * Deve ser implementado pelas classes filhas.
+     */
+    public abstract void posicionarNavios();
+
+    /**
+     * Método abstrato para realizar uma jogada no tabuleiro do oponente.
+     * Deve ser implementado pelas classes filhas.
+     * 
+     * @param tabuleiroOponente Tabuleiro do oponente
+     * @return true se acertou um navio, false caso contrário
+     */
+    public abstract boolean realizarJogada(Tabuleiro tabuleiroOponente);
+
+    /**
+     * Verifica se o participante venceu (todos os navios do oponente destruídos).
+     * 
+     * @param tabuleiroOponente Tabuleiro do oponente
+     * @return true se venceu, false caso contrário
+     */
+    public boolean venceu(Tabuleiro tabuleiroOponente) {
+<span class="fc" id="L59">        return tabuleiroOponente.todosNaviosDestruidos();</span>
+    }
+
+    /**
+     * Verifica se o participante perdeu (todos os seus navios foram destruídos).
+     * 
+     * @return true se perdeu, false caso contrário
+     */
+    public boolean perdeu() {
+<span class="fc" id="L68">        return tabuleiro.todosNaviosDestruidos();</span>
+    }
+
+    /**
+     * Incrementa a pontuação do participante.
+     * 
+     * @param pontos Pontos a serem adicionados
+     */
+    public void adicionarPontos(int pontos) {
+<span class="fc" id="L77">        this.pontuacao += pontos;</span>
+<span class="fc" id="L78">    }</span>
+
+    /**
+     * Incrementa o contador de navios destruídos.
+     */
+    public void navioDestruido() {
+<span class="fc" id="L84">        this.naviosDestruidos++;</span>
+<span class="fc" id="L85">    }</span>
+
+    /**
+     * Retorna o nome do participante.
+     * 
+     * @return Nome do participante
+     */
+    public String getNome() {
+<span class="fc" id="L93">        return nome;</span>
+    }
+
+    /**
+     * Retorna o tabuleiro do participante.
+     * 
+     * @return Tabuleiro do participante
+     */
+    public Tabuleiro getTabuleiro() {
+<span class="fc" id="L102">        return tabuleiro;</span>
+    }
+
+    /**
+     * Retorna a pontuação do participante.
+     * 
+     * @return Pontuação do participante
+     */
+    public int getPontuacao() {
+<span class="fc" id="L111">        return pontuacao;</span>
+    }
+
+    /**
+     * Retorna o número de navios destruídos pelo participante.
+     * 
+     * @return Número de navios destruídos
+     */
+    public int getNaviosDestruidos() {
+<span class="fc" id="L120">        return naviosDestruidos;</span>
+    }
+
+    /**
+     * Retorna uma representação em string do participante.
+     * 
+     * @return String representando o participante
+     */
+    @Override
+    public String toString() {
+<span class="fc" id="L130">        return &quot;Participante{&quot; +</span>
+                &quot;nome='&quot; + nome + '\'' +
+                &quot;, pontuacao=&quot; + pontuacao +
+                &quot;, naviosDestruidos=&quot; + naviosDestruidos +
+                '}';
+    }
+
+    /**
+     * Método para obter estatísticas do participante.
+     * 
+     * @return String com as estatísticas
+     */
+    public String getEstatisticas() {
+<span class="nc" id="L143">        return String.format(&quot;Nome: %s | Pontuação: %d | Navios Destruídos: %d&quot;, </span>
+<span class="nc" id="L144">                           nome, pontuacao, naviosDestruidos);</span>
+    }
+
+    /**
+     * Reseta as estatísticas do participante.
+     */
+    public void resetarEstatisticas() {
+<span class="fc" id="L151">        this.pontuacao = 0;</span>
+<span class="fc" id="L152">        this.naviosDestruidos = 0;</span>
+<span class="fc" id="L153">    }</span>
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
